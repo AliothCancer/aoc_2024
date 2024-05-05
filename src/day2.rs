@@ -1,5 +1,33 @@
 use std::{fs, str::FromStr};
 
+const INPUT_FILE: &str = "input/day2.txt";
+
+pub fn part1() {
+    println!("\tPart 1");
+    let input = fs::read_to_string(INPUT_FILE).unwrap();
+
+    let possible_counts: u32 = input
+        .lines()
+        .map(|game_str| Game::new(game_str))
+        .filter(|game| game.is_possible())
+        .map(|game| game.game_id)
+        .sum();
+
+    println!("\t\tIds sum of possible games: {possible_counts}")
+}
+
+pub fn part2() {
+    println!("\tPart 2");
+    let input = fs::read_to_string(INPUT_FILE).unwrap();
+
+    let sum_of_power_of_sets: u32 = input
+        .lines()
+        .map(|game_str| Game::new(game_str).powers_product())
+        .sum();
+
+    println!("\t\tPowers sum of games: {sum_of_power_of_sets}")
+}
+
 struct Game {
     subsets: Vec<GameSubset>,
     game_id: u32,
@@ -118,30 +146,4 @@ impl Game {
             .reduce(|f: u32, s: u32| f * s)
             .unwrap()
     }
-}
-
-pub fn part1() {
-    println!("\tPart 1");
-    let input = fs::read_to_string("input.txt").unwrap();
-
-    let possible_counts: u32 = input
-        .lines()
-        .map(|game_str| Game::new(game_str))
-        .filter(|game| game.is_possible())
-        .map(|game| game.game_id)
-        .sum();
-
-    println!("\t\tIds sum of possible games: {possible_counts}")
-}
-
-pub fn part2() {
-    println!("\tPart 2");
-    let input = fs::read_to_string("input.txt").unwrap();
-
-    let sum_of_power_of_sets: u32 = input
-        .lines()
-        .map(|game_str| Game::new(game_str).powers_product())
-        .sum();
-
-    println!("\t\tPowers sum of games: {sum_of_power_of_sets}")
 }
